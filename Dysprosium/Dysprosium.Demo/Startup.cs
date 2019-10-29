@@ -1,4 +1,6 @@
 ﻿using Dysprosium.Demo.Middleware;
+using Nancy;
+using Nancy.Owin;
 using Owin;
 using System.Diagnostics;
 
@@ -24,7 +26,10 @@ namespace Dysprosium.Demo
                 }
             });
 
-            app.UseNancy();
+            app.UseNancy(config =>
+            {
+                config.PassThroughWhenStatusCodesAre(HttpStatusCode.NotFound);
+            });
 
             app.Use(async (ctx, next) =>
             {

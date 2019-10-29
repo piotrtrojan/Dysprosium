@@ -1,11 +1,6 @@
 ﻿using Dysprosium.Demo.Middleware;
 using Owin;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Dysprosium.Demo
 {
@@ -28,7 +23,9 @@ namespace Dysprosium.Demo
                     Debug.WriteLine($"Request took: {watch.ElapsedMilliseconds}ms.");
                 }
             });
-            
+
+            app.UseNancy();
+
             app.Use(async (ctx, next) =>
             {
                 await ctx.Response.WriteAsync("<html><head></head><body><h1>Hello World!</h1></body></html>");

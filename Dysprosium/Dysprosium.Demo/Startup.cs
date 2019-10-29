@@ -13,7 +13,7 @@ namespace Dysprosium.Demo
     {
         public static void Configuration(IAppBuilder app)
         {
-            app.Use<DebugMiddleware>(new DebugMiddlewareOptions
+            app.UseDebugMiddleware(new DebugMiddlewareOptions
             {
                 OnIncomingRequest = (ctx) =>
                 {
@@ -28,7 +28,7 @@ namespace Dysprosium.Demo
                     Debug.WriteLine($"Request took: {watch.ElapsedMilliseconds}ms.");
                 }
             });
-
+            
             app.Use(async (ctx, next) =>
             {
                 await ctx.Response.WriteAsync("<html><head></head><body><h1>Hello World!</h1></body></html>");

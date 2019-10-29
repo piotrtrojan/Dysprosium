@@ -20,7 +20,7 @@ namespace Dysprosium.Demo.Middleware
             _options = options;
             if (_options.OnIncomingRequest == null)
                 _options.OnIncomingRequest = (ctx) => { Debug.WriteLine($"Incoming Request: {ctx.Request.Path}"); };
-            
+
             if (_options.OnOutgoingRequest == null)
                 _options.OnOutgoingRequest = (ctx) => { Debug.WriteLine($"Outgoing Request: {ctx.Request.Path}"); };
         }

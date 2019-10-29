@@ -39,14 +39,11 @@ namespace Dysprosium.Demo
                 nancyConfig.PassThroughWhenStatusCodesAre(HttpStatusCode.NotFound);
             });
 
-            
-
             // No longer can live when MVC is enabled.
             //app.Use(async (ctx, next) =>
             //{
             //    await ctx.Response.WriteAsync("<html><head></head><body><h1>Hello World!</h1></body></html>");
             //});
-
         }
     }
 }

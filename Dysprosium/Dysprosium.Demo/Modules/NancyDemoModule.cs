@@ -7,7 +7,8 @@ namespace Dysprosium.Demo.Modules
     {
         public NancyDemoModule()
         {
-            Get("/nancy", x => {
+            Get("/nancy", x =>
+            {
                 var env = Context.GetOwinEnvironment();
                 return $"Hello from Nancy! You reuqested {env["owin.RequestPath"]}";
             });

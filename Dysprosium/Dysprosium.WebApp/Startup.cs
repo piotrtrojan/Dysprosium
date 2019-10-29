@@ -2,6 +2,7 @@
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(Dysprosium.WebApp.Startup))]
+
 namespace Dysprosium.WebApp
 {
     public partial class Startup

@@ -3,6 +3,8 @@ using Nancy;
 using Nancy.Owin;
 using Owin;
 using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Web.Http;
 
 namespace Dysprosium.Demo
 {
@@ -26,9 +28,15 @@ namespace Dysprosium.Demo
                 }
             });
 
-            app.UseNancy(config =>
+            var webApiConfig = new HttpConfiguration();
+            // Scans projects for proper WebApi Attributes, ApiController inheritances etc. and registers the Controllers.
+            webApiConfig.MapHttpAttributeRoutes();
+            webApiConfig.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            app.UseWebApi(webApiConfig);
+
+            app.UseNancy(nancyConfig =>
             {
-                config.PassThroughWhenStatusCodesAre(HttpStatusCode.NotFound);
+                nancyConfig.PassThroughWhenStatusCodesAre(HttpStatusCode.NotFound);
             });
 
             app.Use(async (ctx, next) =>

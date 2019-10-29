@@ -15,10 +15,17 @@ namespace Dysprosium.Demo.Middleware
     public class DebugMiddleware
     {
         private readonly AppFunc _next;
+        private readonly DebugMiddlewareOptions _options;
 
-        public DebugMiddleware(AppFunc next)
+        public DebugMiddleware(AppFunc next, DebugMiddlewareOptions options)
         {
             _next = next;
+            _options = options;
+            if (_options.OnIncomingRequest == null)
+                _options.OnIncomingRequest = (ctx) => { Debug.WriteLine($"Incoming Request: {ctx.Request.Path}"); };
+            
+            if (_options.OnOutgoingRequest == null)
+                _options.OnOutgoingRequest = (ctx) => { Debug.WriteLine($"Outgoing Request: {ctx.Request.Path}"); };
         }
 
         public async Task Invoke(IDictionary<string, object> environment)
@@ -28,9 +35,9 @@ namespace Dysprosium.Demo.Middleware
             // Just for example - how to get environment field.
             var path = (string)environment["owin.RequestPath"];
 
-            Debug.WriteLine($"Incoming Request: {ctx.Request.Path}");
+            _options.OnIncomingRequest(ctx);
             await _next(environment);
-            Debug.WriteLine($"Outgoing Request: {ctx.Request.Path}");
+            _options.OnOutgoingRequest(ctx);
         }
     }
 }

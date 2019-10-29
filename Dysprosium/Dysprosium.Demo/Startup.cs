@@ -1,4 +1,6 @@
 ﻿using Dysprosium.Demo.Middleware;
+using Microsoft.Owin;
+using Microsoft.Owin.Security.Cookies;
 using Nancy;
 using Nancy.Owin;
 using Owin;
@@ -28,16 +30,26 @@ namespace Dysprosium.Demo
                 }
             });
 
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = "ApplicationCookie",
+                LoginPath = new PathString("/Auth/Login")
+
+            });
+
             var webApiConfig = new HttpConfiguration();
             // Scans projects for proper WebApi Attributes, ApiController inheritances etc. and registers the Controllers.
             webApiConfig.MapHttpAttributeRoutes();
             webApiConfig.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             app.UseWebApi(webApiConfig);
 
-            app.UseNancy(nancyConfig =>
-            {
-                nancyConfig.PassThroughWhenStatusCodesAre(HttpStatusCode.NotFound);
-            });
+
+            // When using MVC, Nancy starts to be a problem. The simplest way is to start Nancy only for specific endpoints.
+            app.Map("/nancy", mappedApp => { mappedApp.UseNancy(); });
+            //app.UseNancy(nancyConfig =>
+            //{
+            //    nancyConfig.PassThroughWhenStatusCodesAre(HttpStatusCode.NotFound);
+            //});
 
             // No longer can live when MVC is enabled.
             //app.Use(async (ctx, next) =>

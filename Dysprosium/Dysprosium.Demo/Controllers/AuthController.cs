@@ -30,5 +30,12 @@ namespace Dysprosium.Demo.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut();
+            return Redirect("/");
+        }
     }
 }

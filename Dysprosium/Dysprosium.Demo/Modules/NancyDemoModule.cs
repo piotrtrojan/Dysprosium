@@ -1,5 +1,6 @@
 ﻿using Nancy;
 using Nancy.Owin;
+using Nancy.Security;
 
 namespace Dysprosium.Demo.Modules
 {
@@ -7,10 +8,12 @@ namespace Dysprosium.Demo.Modules
     {
         public NancyDemoModule()
         {
+            this.RequiresMSOwinAuthentication();
             Get("/nancy", x =>
             {
                 var env = Context.GetOwinEnvironment();
-                return $"Hello from Nancy! You reuqested {env["owin.RequestPath"]}";
+                var user = Context.GetMSOwinUser();
+                return $"Hello from Nancy! You reuqested {env["owin.RequestPath"]}<br /><br />User: {user.Identity.Name}";
             });
         }
     }

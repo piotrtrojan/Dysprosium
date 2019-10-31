@@ -37,6 +37,12 @@ namespace Dysprosium.Demo
 
             });
 
+            app.Use(async (ctx, next) => {
+                if (ctx.Authentication.User.Identity.IsAuthenticated)
+                    Debug.WriteLine($"User: {ctx.Authentication.User.Identity.Name}"); ;
+                await next();
+            });
+
             var webApiConfig = new HttpConfiguration();
             // Scans projects for proper WebApi Attributes, ApiController inheritances etc. and registers the Controllers.
             webApiConfig.MapHttpAttributeRoutes();
